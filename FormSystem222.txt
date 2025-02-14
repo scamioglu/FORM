@@ -1,0 +1,354 @@
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Progress } from "@/components/ui/progress";
+import { Checkbox } from "@/components/ui/checkbox";
+
+export default function FormSystem() {
+  const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState({
+    veli: {
+      name: "",
+      nationality: "",
+      relation: "",
+      phone: "",
+      email: "",
+      job: "",
+      address: "",
+      referralSource: "",
+    },
+    student: {
+      name: "",
+      birthYear: "",
+      nationality: "",
+      currentProgram: "",
+      targetClass: "",
+      languages: "",
+    },
+    officialDocs: {
+      international: {
+        passportCopy: false,
+        residencePermit: false,
+        tempID: false,
+        transcript: false,
+        equivalencyDoc: false,
+        photo: false,
+        parentPassport: false,
+        parentResidencePermit: false,
+        parentTempID: false,
+      },
+      national: {
+        idCopy: false,
+        transcript: false,
+        residenceDoc: false,
+        photo: false,
+        parentIDCopy: false,
+        parentContactInfo: false,
+      },
+    },
+    studentPreferences: {
+      interests: [],
+      challenges: "",
+      educationPriorities: [],
+      careerGoals: "",
+      additionalNotes: "",
+    },
+  });
+
+  const handleNextStep = () => {
+    if (step < 3) setStep(step + 1);
+  };
+
+  const handlePrevStep = () => {
+    if (step > 1) setStep(step - 1);
+  };
+
+  const handleCheckboxChange = (key, group) => {
+    setFormData({
+      ...formData,
+      studentPreferences: {
+        ...formData.studentPreferences,
+        [group]: formData.studentPreferences[group].includes(key)
+          ? formData.studentPreferences[group].filter((item) => item !== key)
+          : [...formData.studentPreferences[group], key],
+      },
+    });
+  };
+
+  return (
+    <div className="flex flex-col items-center gap-4 p-4">
+      <Card className="w-96 p-4">
+        <CardContent>
+          <h2 className="text-xl font-bold mb-4">Aşama {step}/3</h2>
+          <Progress value={(step / 3) * 100} className="mb-4" />
+
+          {step === 1 && (
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Veli Bilgileri</h3>
+              <Input
+                placeholder="Veli Adı Soyadı"
+                value={formData.veli.name}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  veli: { ...formData.veli, name: e.target.value },
+                })}
+              />
+              <Input
+                placeholder="Veli Uyruk(ları)"
+                value={formData.veli.nationality}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  veli: { ...formData.veli, nationality: e.target.value },
+                })}
+                className="mt-2"
+              />
+              <Input
+                placeholder="Yakınlık Derecesi (Anne, Baba vb.)"
+                value={formData.veli.relation}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  veli: { ...formData.veli, relation: e.target.value },
+                })}
+                className="mt-2"
+              />
+              <Input
+                placeholder="Cep Telefonu"
+                value={formData.veli.phone}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  veli: { ...formData.veli, phone: e.target.value },
+                })}
+                className="mt-2"
+              />
+              <Input
+                placeholder="E-posta Adresi (tercihe bağlı)"
+                value={formData.veli.email}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  veli: { ...formData.veli, email: e.target.value },
+                })}
+                className="mt-2"
+              />
+              <Input
+                placeholder="Meslek / Çalıştığı Kurum (varsa)"
+                value={formData.veli.job}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  veli: { ...formData.veli, job: e.target.value },
+                })}
+                className="mt-2"
+              />
+              <Input
+                placeholder="İkamet Adresi veya Semt"
+                value={formData.veli.address}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  veli: { ...formData.veli, address: e.target.value },
+                })}
+                className="mt-2"
+              />
+              <Input
+                placeholder="Okulumuzu Nereden Duydunuz?"
+                value={formData.veli.referralSource}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  veli: { ...formData.veli, referralSource: e.target.value },
+                })}
+                className="mt-2"
+              />
+
+              <h3 className="text-lg font-semibold mt-4 mb-2">Öğrenci Bilgileri</h3>
+              <Input
+                placeholder="Adı Soyadı"
+                value={formData.student.name}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  student: { ...formData.student, name: e.target.value },
+                })}
+              />
+              <Input
+                placeholder="Doğum Tarihi (yıl)"
+                value={formData.student.birthYear}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  student: { ...formData.student, birthYear: e.target.value },
+                })}
+                className="mt-2"
+              />
+              <Input
+                placeholder="Öğrenci Uyruk(ları)"
+                value={formData.student.nationality}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  student: { ...formData.student, nationality: e.target.value },
+                })}
+                className="mt-2"
+              />
+              <Input
+                placeholder="Okuduğu mevcut eğitim programı"
+                value={formData.student.currentProgram}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  student: { ...formData.student, currentProgram: e.target.value },
+                })}
+                className="mt-2"
+              />
+              <Input
+                placeholder="Kayıt edilmek istenen sınıf"
+                value={formData.student.targetClass}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  student: { ...formData.student, targetClass: e.target.value },
+                })}
+                className="mt-2"
+              />
+              <Input
+                placeholder="Bildiği Yabancı Dil(ler) (varsa)"
+                value={formData.student.languages}
+                onChange={(e) => setFormData({
+                  ...formData,
+                  student: { ...formData.student, languages: e.target.value },
+                })}
+                className="mt-2"
+              />
+            </div>
+          )}
+
+          {step === 2 && (
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Öğrenciyi Tanıyoruz</h3>
+              <p className="mb-2">1. Öğrencinizin ilgi alanlarını seçiniz (En fazla 3):</p>
+              {[
+                "Akademik / Bilimsel konular (matematik, fen, araştırma vb.)",
+                "Sanat (resim, müzik, tiyatro, dans)",
+                "Spor (futbol, basketbol, yüzme, tenis vb.)",
+                "Teknoloji / Kodlama / Oyun Geliştirme",
+                "Sosyal / kültürel etkinlikler (toplum hizmeti, sosyal kulüpler vb.)",
+                "Diğer: _____________________________________________",
+              ].map((option) => (
+                <div key={option} className="flex items-center gap-2">
+                  <Checkbox
+                    onCheckedChange={() => handleCheckboxChange(option, "interests")}
+                  />
+                  <span>{option}</span>
+                </div>
+              ))}
+
+              <p className="mt-4 mb-2">2. Okul/ders ortamında öğrencinizin en çok zorlandığı alan hangisi?</p>
+              {[
+                "Dikkat / konsantrasyon",
+                "Sürekli ve düzenli ders çalışma alışkanlığı",
+                "Sosyal iletişim (arkadaş / öğretmen ilişkileri)",
+                "Hangi konu/derste zorlandığını bilmiyoruz / henüz gözlemlemedik",
+                "Diğer: _____________________________________________",
+              ].map((option) => (
+                <div key={option} className="flex items-center gap-2">
+                  <Checkbox
+                    onCheckedChange={() => handleCheckboxChange(option, "challenges")}
+                  />
+                  <span>{option}</span>
+                </div>
+              ))}
+
+              <p className="mt-4 mb-2">3. Aile olarak eğitimde en önem verdiğiniz kriter(ler) nedir? (En fazla 2 seçebilirsiniz.)</p>
+              {[
+                "Akademik başarı ve sınavlarda yüksek performans",
+                "İyi derecede yabancı dil öğrenimi",
+                "Sosyal, kültürel ve sportif faaliyetlerde aktif olmak",
+                "Teknoloji ve dijital becerileri geliştirme",
+                "Bireysel farklılıklara önem veren rehberlik / danışmanlık hizmeti",
+                "Diğer: _____________________________________________",
+              ].map((option) => (
+                <div key={option} className="flex items-center gap-2">
+                  <Checkbox
+                    onCheckedChange={() => handleCheckboxChange(option, "educationPriorities")}
+                  />
+                  <span>{option}</span>
+                </div>
+              ))}
+
+              <p className="mt-4 mb-2">4. Öğrencinizin gelecekteki meslek veya üniversite hedefiyle ilgili bir fikriniz var mı?</p>
+              {[
+                "Henüz net değil / Kararsız",
+                "Mühendislik / Yazılım / Teknoloji",
+                "Tıp / Sağlık",
+                "Hukuk / Sosyal Bilimler / Psikoloji",
+                "Sanat / Spor / Tasarım",
+                "Diğer: _____________________________________________",
+              ].map((option) => (
+                <div key={option} className="flex items-center gap-2">
+                  <Checkbox
+                    onCheckedChange={() => handleCheckboxChange(option, "careerGoals")}
+                  />
+                  <span>{option}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {step === 3 && (
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Resmi Evrak Belgeleri</h3>
+              <h4 className="text-md font-semibold mb-2">I. Yurt Dışından Gelen Öğrenciler İçin Gerekli Belgeler</h4>
+              {Object.keys(formData.officialDocs.international).map((docKey) => (
+                <div key={docKey} className="flex items-center gap-2">
+                  <Checkbox
+                    checked={formData.officialDocs.international[docKey]}
+                    onCheckedChange={() =>
+                      handleCheckboxChange(docKey, "international", "officialDocs")
+                    }
+                  />
+                  <span>{
+                    {
+                      passportCopy: "Pasaport fotokopisi",
+                      residencePermit: "İkamet izni belgesi",
+                      tempID: "Geçici kimlik numarası belgesi",
+                      transcript: "Transkript (Noter onaylı Türkçe tercümesi)",
+                      equivalencyDoc: "Denklik belgesi (MEB)",
+                      photo: "Vesikalık fotoğraf",
+                      parentPassport: "Veli Pasaport fotokopisi",
+                      parentResidencePermit: "Veli İkamet izni belgesi",
+                      parentTempID: "Veli Geçici kimlik numarası belgesi",
+                    }[docKey]
+                  }</span>
+                </div>
+              ))}
+
+              <h4 className="text-md font-semibold mt-4 mb-2">II. Yurt İçinden Gelen Öğrenciler İçin Gerekli Belgeler</h4>
+              {Object.keys(formData.officialDocs.national).map((docKey) => (
+                <div key={docKey} className="flex items-center gap-2">
+                  <Checkbox
+                    checked={formData.officialDocs.national[docKey]}
+                    onCheckedChange={() =>
+                      handleCheckboxChange(docKey, "national", "officialDocs")
+                    }
+                  />
+                  <span>{
+                    {
+                      idCopy: "TC Kimlik Kartı fotokopisi",
+                      transcript: "Transkript",
+                      residenceDoc: "İkametgah belgesi",
+                      photo: "Vesikalık fotoğraf",
+                      parentIDCopy: "Veli Kimlik fotokopisi",
+                      parentContactInfo: "Veli İletişim bilgileri",
+                    }[docKey]
+                  }</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <div className="flex justify-between mt-4">
+            <Button onClick={handlePrevStep} disabled={step === 1}>
+              Geri
+            </Button>
+            <Button onClick={handleNextStep} disabled={step === 3}>
+              İleri
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
